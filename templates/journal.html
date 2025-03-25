@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Journal Entries - MeloMind</title>
+    <!-- Link your main styles (if needed) -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    
+    <!-- Journal-specific overrides -->
+    <style>
+        /* Remove the homepage background image by setting a plain color */
+        body {
+            background: #f0f8ff !important;  /* Light blue (similar to homepage) */
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        /* If your homepage CSS adds a smiley via h1::after, remove it here */
+        h1::after {
+            content: none !important;
+        }
+
+        h1 {
+            color: #4A90E2;
+            margin-bottom: 20px;
+        }
+
+        /* Container for the form */
+        .journal-form {
+            width: 60%;
+            margin: 0 auto 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* Style the textarea and button */
+        .journal-form textarea {
+            width: 100%;
+            height: 100px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            box-sizing: border-box; /* Fixes overflow on the right side */
+        }
+        .journal-form button {
+            background-color: #4A90E2;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        /* Style for each journal entry */
+        .entry-box {
+            width: 60%;
+            margin: 10px auto;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: left; /* So the text isn’t all centered */
+        }
+    </style>
+</head>
+<body>
+    <h1>Journal Entries</h1>
+
+    <!-- Journal Entry Form -->
+    <div class="journal-form">
+        <form id="journalForm">
+            <textarea id="entryText" placeholder="Write your journal entry here..."></textarea><br>
+            <button type="submit">Submit Entry</button>
+        </form>
+    </div>
+
+    <!-- Display journal entries -->
+    {% if entries %}
+        {% for entry in entries %}
+            <div class="entry-box">
+                <p>{{ entry['entry'] }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No journal entries yet.</p>
+    {% endif %}
+
+    <script>
+        // JavaScript to handle form submission without reloading the page
+        document.getElementById("journalForm").addEventListener("submit", function(event) {
+            event.preventDefault();  // Prevent default form submission
+            let entryText = document.getElementById("entryText").value;
+
+            if (!entryText.trim()) {
+                alert("Please write something before submitting!");
+                return;
+            }
+
+            fetch("/journal", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ entry: entryText })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    location.reload();  // Reload to show the new entry
+                } else {
+                    alert("Error: " + (data.error || "Something went wrong."));
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    </script>
+</body>
+</html>

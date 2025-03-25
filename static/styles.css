@@ -1,0 +1,39 @@
+/* Makes the background color soft and calming */
+body {
+    background-color: #f0f8ff;  /* Light blue background */
+    font-family: Arial, sans-serif;  /* Modern font */
+    text-align: center;  /* Centers the text */
+    margin: 0;
+    padding: 0;
+}
+
+/* Styles the heading */
+h1 {
+    color: #4A90E2;
+    font-size: 36px;
+    margin-top: 50px;
+}
+
+/* add smiley face and set color to light purple */
+h1::after {
+    content: " :)";
+    font-weight: bold;
+    font-size: 40px;
+    color: #A18CD1;
+}
+
+/* Styles the paragraph */
+p {
+    font-size: 18px;
+    color: #333;
+}
+
+/* Add a cloud background */
+body {
+    background: url("../static/clouds.jpg") no-repeat center center fixed;
+    background-size: cover;  /* want to cover whole screen */
+    font-family: Arial, sans-serif;  /* Keeps text readable */
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
