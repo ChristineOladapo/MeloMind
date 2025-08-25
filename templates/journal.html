@@ -78,6 +78,11 @@
         </form>
     </div>
 
+    <!-- Back button -->
+    <a href="{{ url_for('home') }}">
+        <button style="margin-bottom: 20px;">Back to Home</button>
+    </a>
+
     <!-- Display journal entries -->
     {% if entries %}
         {% for entry in entries %}

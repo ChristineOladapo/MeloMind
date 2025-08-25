@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, url_for, redirect, session
+from flask import Flask, render_template, request, jsonify, url_for, redirect, session, flash
 from backend.journal import load_entries, save_entry
 from backend.users import add_user, verify_user
 import os
@@ -18,8 +18,10 @@ def register():
         username = request.form["username"]
         password = request.form["password"]
         if add_user(username, password):
+            flash("Registration successful! Please log in.", "success")
             return redirect(url_for("login"))
-        return "Username already exists!"
+        flash("Username already exists. Try a different one.", "error")
+        return redirect(url_for("register"))
     return render_template("register.html")
 
 @app.route("/login", methods=["GET", "POST"])

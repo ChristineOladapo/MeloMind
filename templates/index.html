@@ -5,6 +5,18 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
+        <!-- Login/Register or Logout Section -->
+        <div style="position: absolute; top: 20px; right: 20px;">
+            {% if session.get('user') %}
+                <span>Welcome, {{ session['user'] }}!</span>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Login</a> |
+                <a href="{{ url_for('register') }}">Register</a>
+            {% endif %}
+        </div>
+    
+    <!-- Main Navigation -->
     <h1>Welcome to MeloMind</h1>
     <p>This is your mental health support space.</p>
     <a href="{{ url_for('journal') }}">Go to Journal</a>
