@@ -17,17 +17,19 @@ def chatbot():
 @app.route("/journal", methods=["GET", "POST"])
 def journal():
     if request.method == "POST":
-        data = request.get_json()
-        entry = data.get("entry", "").strip()
-        if not entry:
+        entry_text = request.get_json().get("entry", "").strip()
+        if not entry_text:
             return jsonify({"error": "Entry cannot be empty"}), 400
-        save_entry(entry)
+
+        #Save to journal.json
+        save_entry(entry_text)
         return jsonify({"message": "Journal entry saved!"})
-    # GET
+    
+    #GET: load entries from JSON file
     entries = load_entries()
     return render_template("journal.html", entries=entries)
 
 
-if __name__ == "__main__":  # only runs Flask if script is executed directly
+if __name__ == "__main__":
     app.run(debug=True)  #starts the Flask web server and automates code changes
 

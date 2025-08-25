@@ -11,8 +11,9 @@ def load_entries():
         return []
 
 def save_entry(entry_text):
-    """Append a new entry to journal.json."""
+    """Insert a new entry at the top of journal.json."""
     entries = load_entries()
-    entries.append({"entry": entry_text})
+    # entries.append({"entry": entry_text})
+    entries.insert(0, {"entry": entry_text})  # append to top
     with open(JOURNAL_FILE, "w") as f:
         json.dump(entries, f, indent=4)
