@@ -47,17 +47,22 @@ def chatbot():
 
 @app.route("/journal", methods=["GET", "POST"])
 def journal():
+    if "user" not in session:
+        return redirect(url_for("login"))  #makes sure user can't access w/out logging in
+    
+    username = session["user"]
+
     if request.method == "POST":
         entry_text = request.get_json().get("entry", "").strip()
         if not entry_text:
             return jsonify({"error": "Entry cannot be empty"}), 400
 
         #Save to journal.json
-        save_entry(entry_text)
+        save_entry(username, entry_text)
         return jsonify({"message": "Journal entry saved!"})
     
     #GET: load entries from JSON file
-    entries = load_entries()
+    entries = load_entries(username)
     return render_template("journal.html", entries=entries)
 
 
